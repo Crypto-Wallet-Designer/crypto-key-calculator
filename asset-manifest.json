@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "./static/css/main.84beb0bb.css",
-    "main.js": "./static/js/main.0d154b56.js",
-    "static/media/AvenirNext-Regular.ttf": "./static/media/AvenirNext-Regular.5af8420c6420a53122c1.ttf",
-    "static/media/AvenirNext-UltraLight.ttf": "./static/media/AvenirNext-UltraLight.8784cad67912a5f4912b.ttf",
-    "static/media/AvenirNext-Bold.ttf": "./static/media/AvenirNext-Bold.3641239b7f032f5917be.ttf",
-    "static/media/AvenirNext-Medium.ttf": "./static/media/AvenirNext-Medium.f3f4c5ea2cab3ff6b89b.ttf",
-    "static/media/AvenirNext-DemiBold.ttf": "./static/media/AvenirNext-DemiBold.6b11b1adc805907a3cc0.ttf",
-    "static/media/AvenirNext-Heavy.ttf": "./static/media/AvenirNext-Heavy.80080790847e897ba987.ttf",
-    "static/media/zengo_logo.svg": "./static/media/zengo_logo.3c70768c228bf9e9ec46eb77e76e363d.svg",
-    "index.html": "./index.html",
-    "main.84beb0bb.css.map": "./static/css/main.84beb0bb.css.map",
-    "main.0d154b56.js.map": "./static/js/main.0d154b56.js.map"
+    "main.css": "/crypto-key-calculator/static/css/main.0d7babd0.css",
+    "main.js": "/crypto-key-calculator/static/js/main.1531ae37.js",
+    "static/media/AvenirNext-Regular.ttf": "/crypto-key-calculator/static/media/AvenirNext-Regular.5af8420c6420a53122c1.ttf",
+    "static/media/AvenirNext-UltraLight.ttf": "/crypto-key-calculator/static/media/AvenirNext-UltraLight.8784cad67912a5f4912b.ttf",
+    "static/media/AvenirNext-Bold.ttf": "/crypto-key-calculator/static/media/AvenirNext-Bold.3641239b7f032f5917be.ttf",
+    "static/media/AvenirNext-Medium.ttf": "/crypto-key-calculator/static/media/AvenirNext-Medium.f3f4c5ea2cab3ff6b89b.ttf",
+    "static/media/AvenirNext-DemiBold.ttf": "/crypto-key-calculator/static/media/AvenirNext-DemiBold.6b11b1adc805907a3cc0.ttf",
+    "static/media/AvenirNext-Heavy.ttf": "/crypto-key-calculator/static/media/AvenirNext-Heavy.80080790847e897ba987.ttf",
+    "static/media/zengo_logo.svg": "/crypto-key-calculator/static/media/zengo_logo.3c70768c228bf9e9ec46eb77e76e363d.svg",
+    "index.html": "/crypto-key-calculator/index.html",
+    "main.0d7babd0.css.map": "/crypto-key-calculator/static/css/main.0d7babd0.css.map",
+    "main.1531ae37.js.map": "/crypto-key-calculator/static/js/main.1531ae37.js.map"
   },
   "entrypoints": [
-    "static/css/main.84beb0bb.css",
-    "static/js/main.0d154b56.js"
+    "static/css/main.0d7babd0.css",
+    "static/js/main.1531ae37.js"
   ]
 }
