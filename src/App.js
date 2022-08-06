@@ -98,15 +98,15 @@ function App() {
       }
     }
 
-    if (keyNum + 1 <= 3) {
-      findOptimalWallet(keyNum + 1);
+    if (keyNum <= 3) {
+      findOptimalWallet(keyNum);
     }
     else {
       setOptimalWalletProb(0);
       setOptimalWalletString("()");
     }
     setKeyProbabilityTable(keyProbabilityTable);
-    setKeyNum(keyNum + 1);
+    setKeyNum(keyNum);
   }
 
   function removeKey(index) {
@@ -115,7 +115,7 @@ function App() {
     }
     for (const keyState in keyProbabilityTable) {
       if (Object.hasOwnProperty.call(keyProbabilityTable, keyState)) {
-        keyProbabilityTable[keyState] = keyProbabilityTable[keyState].slice(0, index).concat(keyProbabilityTable[keyState].slice(index + 1, keyNum));
+        keyProbabilityTable[keyState] = keyProbabilityTable[keyState].slice(0, index).concat(keyProbabilityTable[keyState].slice(index, keyNum));
       }
     }
 
@@ -136,7 +136,7 @@ function App() {
   function renderKeyProbInputRow(index) {
     return (
       <tr key={index} style={{ textAlign: 'center' }}>
-        <td><Button variant="dark-lavender" style={{ marginRight: '5px' }}>{index + 1}</Button></td>
+        <td><Button variant="dark-lavender" style={{ marginRight: '5px' }}>{index}</Button></td>
         <td><input type="number" disabled value={probabilityToDisplayValue(keyProbabilityTable.safe[index] * 100)} /> %</td>
         <td><input type="number" value={probabilityToDisplayValue(keyProbabilityTable.leaked[index] * 100)} onChange={(event) => updateKeyProbabilities('leaked', index, event.target.value)} /> %</td>
         <td><input type="number" value={probabilityToDisplayValue(keyProbabilityTable.lost[index] * 100)} onChange={(event) => updateKeyProbabilities('lost', index, event.target.value)} /> %</td>
@@ -216,7 +216,7 @@ function App() {
     for (let combination of walletArr) {
       walletString += " ( ";
       for (let keyIndex of combination) {
-        walletString += (keyIndex + 1).toString() + " and ";
+        walletString += (keyIndex).toString() + " and ";
       }
       walletString = walletString.slice(0, -4);
       walletString += " ) ";
@@ -226,8 +226,28 @@ function App() {
     return walletString;
   }
 
+  const displayWalletToBooleanString = (walletArr) => {
+    let walletString = "return ";
+    if (walletArr.length === 0 || walletArr[0].length === 0) {
+      return "return k[0];";
+    }
+
+    for (let combination of walletArr) {
+      walletString += " ( ";
+      for (let keyIndex of combination) {
+        walletString += `k[${(keyIndex).toString()}] && `;
+      }
+      walletString = walletString.slice(0, -4);
+      walletString += " ) ";
+      walletString += " || ";
+    }
+
+    walletString = walletString.slice(0, -3);
+    return walletString + ";";
+  }
+
   function findOptimalWallet(keyNumber) {
-    if (keyNumber > 6) {
+    if (keyNumber > 12) {
       setShowCantComputeOptimalWallet(true);
       return;
     }
@@ -397,20 +417,28 @@ function App() {
   function displayCombinationEditor() {
     let displayCurrentState = "";
     for (let keyIndex of combinationToAdd) {
-      displayCurrentState += (keyIndex + 1).toString() + " and ";
+      displayCurrentState += (keyIndex).toString() + " and ";
     }
     displayCurrentState = displayCurrentState.slice(0, -5);
 
     let buttons = [];
     for (let i = 0; i < keyNum; i++) {
       if (!combinationToAdd.includes(i)) {
-        buttons.push(<Button variant="dark-lavender" style={{ marginRight: '5px' }} onClick={(event) => addToCombination(i)}>{i + 1}</Button>);
+        buttons.push(<Button variant="dark-lavender" style={{ marginRight: '5px' }} onClick={(event) => addToCombination(i)}>{i}</Button>);
       }
     }
 
     return (<div><div style={{ fontSize: '25px', fontWeight: 'bold', marginBottom: '5px', marginTop: '15px' }}>( {displayCurrentState}   )</div>
       <div style={{ marginBottom: '15px' }}>{buttons}</div></div>)
   }
+
+  const formatWalletTitle = () => {
+    if (keyNum > 6) {
+      return "4. Semi-Optimal Wallet"
+    } else {
+      return "4. Optimal Wallet"
+    }
+  };
 
   let keyProbInputs = [];
   for (let i = 0; i < keyNum; i++) {
@@ -509,8 +537,8 @@ function App() {
       <br />
       <Button style={{ marginBottom: '20px' }} variant='minty' size='sm' onClick={() => { setCombinationToAdd([]) }}>Clear combination</Button>
 
-      <Card.Text style={{ fontSize: '25px' }}>Or enter Wallet as String</Card.Text>
-      <Form.Control type="text" size='sm' placeholder='(1 and 2) or (2 and 3)' onChange={(event) => parseWalletFromString(event.target.value)} />
+      <Card.Text style={{ fontSize: '25px' }}>Or enter wallet as string:</Card.Text>
+      <Form.Control type="text" size='sm' placeholder='(0 and 1) or (1 and 2)' onChange={(event) => parseWalletFromString(event.target.value)} />
       {alertWalletStrWithErrors}
     </Card.Body>
   </Card>);
@@ -524,13 +552,13 @@ function App() {
       {warnWalletReduced}
 
       <div style={{ fontSize: '25px' }}>Success Probability: {toPercent(computeProbabilityForWallet(wallet, keyNum))}</div>
-      <ContractModal keyNum={keyNum} optimalWalletString={rawOptimalWalletString}></ContractModal>
+      <ContractModal keyNum={keyNum} optimalWalletString={displayWalletToBooleanString(wallet)}/>
     </Card.Body>
   </Card>);
 
   let optimalWalletCard = (<Card style={{ marginBottom: '20px' }}>
     <Card.Body>
-      <Card.Title style={{ fontSize: '28px' }}>Optimal Wallet &nbsp;
+      <Card.Title style={{ fontSize: '28px' }}>{formatWalletTitle()} &nbsp;
         <Button style={{ marginBottom: '5px' }} variant='minty' size='sm' onClick={() => { setOptimalWalletString("()"); setOptimalWalletProb(0); findOptimalWallet(keyNum); }}>
           Compute
         </Button>
@@ -538,7 +566,7 @@ function App() {
       </Card.Title>
       <div style={{ fontSize: '25px', fontWeight: 'bold' }}>{optimalWalletString}</div>
       <div style={{ fontSize: '25px' }}>Success Probability: {toPercent(optimalWalletProb)}</div>
-      <ContractModal keyNum={keyNum} optimalWalletString={rawOptimalWalletString}></ContractModal>
+      <ContractModal keyNum={keyNum} optimalWalletString={rawOptimalWalletString}/>
     </Card.Body>
   </Card>);
 
@@ -589,12 +617,60 @@ function App() {
         crossOrigin="anonymous"
       />
 
-      <h1 style={{ marginLeft: marginHorizontalPx, marginRight: marginHorizontalPx, marginTop: '20px', textAlign: 'center', color: '#2C2F33' }}>Crypto-Wallet Designer (pre-alpha)</h1>
+      <h1 style={{ marginLeft: marginHorizontalPx, marginRight: marginHorizontalPx, marginTop: '20px', textAlign: 'center', color: '#2C2F33' }}>
+        Strongly Walletz
+      </h1>
 
       {cardsContainer}
 
-      <p style={{ textAlign: 'right', marginRight: marginHorizontalPx, marginBottom: '0px', marginTop:'7px' }}>powered by <a href="https://zengo.com/"><img src={ZengoLogo} style={{ height: '6vmin' }} alt="ZenGo" /></a></p>
-      <p style={{ textAlign: 'right', marginRight: marginHorizontalPx }}>code on <a href="https://github.com/ZenGo-X/crypto-key-calculator"><img src={GitHubLogo} style={{ height: '2vmin', marginLeft: '5px' }} alt="Github" /></a></p>
+      <p style={{ textAlign: 'right', marginRight: marginHorizontalPx, marginBottom: '0px', marginTop:'7px' }}>Previously powered by <a href="https://zengo.com/"><img src={ZengoLogo} style={{ height: '6vmin' }} alt="ZenGo" /></a></p>
+      <p style={{ textAlign: 'right', marginRight: marginHorizontalPx }}>code on <a href="https://github.com/Crypto-Wallet-Designer/crypto-key-calculator"><img src={GitHubLogo} style={{ height: '2vmin', marginLeft: '5px' }} alt="Github" /></a></p>
+
+      <div style={{
+        width: "100%",
+        height: "18vh",
+        bottom: 0,
+        backgroundColor: "white",
+        borderTop: "1px solid #aaaaaa"
+      }}>
+        <p style={{marginTop: "5vh", textAlign: "center"}}>Created by:</p>
+        <div>
+          <p style={{textAlign: "center"}}>
+            <a href="https://webee.technion.ac.il/people/ittay/" target="_blank" rel="noopener noreferrer">
+              Ittay Eyal
+            </a>
+            , &nbsp;
+            <a href="https://github.com/moh-eulith/" target="_blank" rel="noopener noreferrer">
+              Mohammad Rezaei
+            </a>
+            , &nbsp;
+            <a href="https://github.com/" target="_blank" rel="noopener noreferrer">
+              Nicolas Serrano
+            </a>
+            , &nbsp;
+            <a href="https://roibarzur.github.io/" target="_blank" rel="noopener noreferrer">
+              Roi Bar-Zur
+            </a>
+            , &nbsp;
+            <a href="https://doris-lessing.github.io/luluzhou.github.io/" target="_blank" rel="noopener noreferrer">
+              Lulu Zhou
+            </a>
+            , &nbsp;
+            <a href="https://zerui-cheng.com/" target="_blank" rel="noopener noreferrer">
+              Zerui Cheng
+            </a>
+            , &nbsp;
+            <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank" rel="noopener noreferrer">
+              Shutong Qu
+            </a>
+            , &nbsp;
+            <a href="https://github.com/kristian1108" target="_blank" rel="noopener noreferrer">
+              Kristian Gaylord
+            </a>
+          </p>
+        </div>
+        <p style={{textAlign: "center"}}>This website is a fork of the original research @ http://walletdesign.dev</p>
+      </div>
     </div>
   );
 }

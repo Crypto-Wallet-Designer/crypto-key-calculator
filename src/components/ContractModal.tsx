@@ -16,7 +16,6 @@ function ContractModal(props: any) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const handleResultClose = () =>  setShowResult(false);
-  const handleResultShow = () => setShowResult(true);
 
   const [inputs, setInputs] = useState<any>({});
 
@@ -32,7 +31,7 @@ function ContractModal(props: any) {
     for (var i=0; i<n; i++){
       content.push(
         <Form.Group className="mb-3" controlId="formBasicEmail" key={'reactKey'+i}>
-          <Form.Label>{`Key ${i+1}:`}</Form.Label>
+          <Form.Label>{`Key ${i}:`}</Form.Label>
           <Form.Control id={i.toString()} onChange={changeInput} type="text" placeholder="Input public addresses" />
         </Form.Group>
       );
@@ -42,7 +41,7 @@ function ContractModal(props: any) {
 
   function getInputKeys(){
     let keys: any[] = [];
-    for(var i=0; i<props.keyNum; i++){
+    for (let i=0; i<props.keyNum; i++){
       const value = inputs[i];
       keys.push(value);
     }
@@ -225,6 +224,14 @@ function ContractModal(props: any) {
     });
   }
 
+  const displayDefaultWarning = (optimalWalletString: any) => {
+    if (optimalWalletString === "return k[0];") {
+      return <h1 style={{color: "red"}}>Yo! Default Wallet!! Authorizes only on 1st key!</h1>
+    } else {
+      return <div/>
+    }
+  }
+
   return (
     <>
       <Button variant='dark-lavender' onClick={handleShow}>
@@ -236,6 +243,7 @@ function ContractModal(props: any) {
           <Modal.Title>Deploy your wallet with your keys</Modal.Title>
         </Modal.Header>
         <Modal.Body>
+          {displayDefaultWarning(props.optimalWalletString)}
         <Form>
           { createInputs(props.keyNum) }
         </Form>
@@ -262,7 +270,9 @@ function ContractModal(props: any) {
           <div>
             <h3>Your wallet is deployed at:</h3>
             <h3>
-              <a href={`https://goerli.etherscan.io/address/${contractAddress}`} target="_blank">{contractAddress}</a>
+              <a href={`https://goerli.etherscan.io/address/${contractAddress}`} target="_blank" rel="noopener noreferrer">
+                {contractAddress}
+              </a>
             </h3>
             <Confetti style={{width: '100%'}}/>
           </div>
