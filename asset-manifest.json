@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/crypto-key-calculator/static/css/main.0d7babd0.css",
-    "main.js": "/crypto-key-calculator/static/js/main.b1e08b5e.js",
+    "main.js": "/crypto-key-calculator/static/js/main.ce210453.js",
     "static/media/AvenirNext-Regular.ttf": "/crypto-key-calculator/static/media/AvenirNext-Regular.5af8420c6420a53122c1.ttf",
     "static/media/AvenirNext-UltraLight.ttf": "/crypto-key-calculator/static/media/AvenirNext-UltraLight.8784cad67912a5f4912b.ttf",
     "static/media/AvenirNext-Bold.ttf": "/crypto-key-calculator/static/media/AvenirNext-Bold.3641239b7f032f5917be.ttf",
@@ -12,10 +12,10 @@
     "static/media/zengo_logo.svg": "/crypto-key-calculator/static/media/zengo_logo.3c70768c228bf9e9ec46eb77e76e363d.svg",
     "index.html": "/crypto-key-calculator/index.html",
     "main.0d7babd0.css.map": "/crypto-key-calculator/static/css/main.0d7babd0.css.map",
-    "main.b1e08b5e.js.map": "/crypto-key-calculator/static/js/main.b1e08b5e.js.map"
+    "main.ce210453.js.map": "/crypto-key-calculator/static/js/main.ce210453.js.map"
   },
   "entrypoints": [
     "static/css/main.0d7babd0.css",
-    "static/js/main.b1e08b5e.js"
+    "static/js/main.ce210453.js"
   ]
 }
