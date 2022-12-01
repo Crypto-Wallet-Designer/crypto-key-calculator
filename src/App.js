@@ -77,7 +77,15 @@ function App() {
       newProbabilityTable['safe'][index] = 1 - probabilitiesSum;
     }
 
-    setKeyProbabilityTable(newProbabilityTable);
+    setKeyProbabilityTable(newProbabilityTable);  
+
+    if (keyNum <= 5) {
+      findOptimalWallet(keyNum);
+    }
+    else {
+      setOptimalWalletProb(0);
+      setOptimalWalletString("()");
+    }
   }
 
   function probabilityToDisplayValue(probability) {
@@ -98,15 +106,16 @@ function App() {
         keyProbabilityTable[keyState] = keyProbabilityTable[keyState].concat([keyProbabilityTable[keyState][index]]);
       }
     }
-
+    
+    setKeyProbabilityTable(keyProbabilityTable);
+    
     if (keyNum + 1 <= 5) {
-      findOptimalWallet(keyNum);
+      findOptimalWallet(keyNum + 1);
     }
     else {
       setOptimalWalletProb(0);
       setOptimalWalletString("()");
     }
-    setKeyProbabilityTable(keyProbabilityTable);
     setKeyNum(keyNum + 1);
   }
 
@@ -118,8 +127,10 @@ function App() {
       if (Object.hasOwnProperty.call(keyProbabilityTable, keyState)) {
         keyProbabilityTable[keyState] = keyProbabilityTable[keyState].slice(0, index).concat(keyProbabilityTable[keyState].slice(index + 1, keyNum));
       }
-    }
+    } 
 
+    setKeyProbabilityTable(keyProbabilityTable);
+    
     if (keyNum - 1 <= 5) {
       findOptimalWallet(keyNum - 1);
     }
@@ -127,8 +138,7 @@ function App() {
       setOptimalWalletProb(0);
       setOptimalWalletString("()");
     }
-
-    setKeyProbabilityTable(keyProbabilityTable);
+    
     setKeyNum(keyNum - 1);
     setWallet([]);
     setCombinationToAdd([]);
