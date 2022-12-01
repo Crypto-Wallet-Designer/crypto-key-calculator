@@ -99,7 +99,7 @@ function App() {
       }
     }
 
-    if (keyNum <= 3) {
+    if (keyNum + 1 <= 5) {
       findOptimalWallet(keyNum);
     }
     else {
@@ -116,11 +116,11 @@ function App() {
     }
     for (const keyState in keyProbabilityTable) {
       if (Object.hasOwnProperty.call(keyProbabilityTable, keyState)) {
-        keyProbabilityTable[keyState] = keyProbabilityTable[keyState].slice(0, index).concat(keyProbabilityTable[keyState].slice(index, keyNum));
+        keyProbabilityTable[keyState] = keyProbabilityTable[keyState].slice(0, index).concat(keyProbabilityTable[keyState].slice(index + 1, keyNum));
       }
     }
 
-    if (keyNum - 1 <= 3) {
+    if (keyNum - 1 <= 5) {
       findOptimalWallet(keyNum - 1);
     }
     else {
